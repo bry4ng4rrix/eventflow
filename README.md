@@ -1,3 +1,5 @@
+<img src="https://github.com/madjeek-web/eventflow/raw/main/EventFlow_logo_png_no_bg_colorz.png" alt="EventFlow logo png image" width="100%" height="100%">
+
 # EventFlow
 
 ### Open-Source Community Event Management Platform
