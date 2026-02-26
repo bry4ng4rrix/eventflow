@@ -1,13 +1,3 @@
-# CI workflow for EventFlow
-# This file tells GitHub Actions to run lint and build checks automatically
-# on every push to main and on every pull request targeting main.
-#
-# What this means in practice :
-# - If you push code with a lint error, the check will fail and you will see a red cross
-#   next to your commit on GitHub.
-# - If your code breaks the Next.js build, the check will fail before it reaches main.
-# - Pull requests cannot be merged until all checks pass (if branch protection is enabled).
-
 name: CI
 
 on:
@@ -22,32 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1 : Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2 : Set up Node.js 20 on the runner
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      # Step 3 : Install all npm dependencies
-      # Uses the exact versions locked in package-lock.json for reproducibility
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # Step 4 : Run ESLint on all source files
-      # If any lint rule is violated, this step fails and the workflow stops
       - name: Run linter
         run: npm run lint
 
-      # Step 5 : Build the Next.js application for production
-      # This catches TypeScript errors, invalid imports, and build-time issues
-      # The JWT_SECRET is required by the build to avoid environment variable errors
       - name: Build application
         run: npm run build
         env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-placeholder-secret-not-used-in-production' }}
-          NODE_ENV: production
+          JWT_SECRET: ci-placeholder-secret-not-used-in-production
