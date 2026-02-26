@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/madjeek-web/eventflow/raw/main/EventFlow_logo_png_mini.png" alt="EventFlow logo png image" width="80%" height="80%">
+<img src="https://github.com/madjeek-web/eventflow/raw/main/EventFlow_logo_png_mini.png" alt="EventFlow logo png image" width="65%" height="65%">
 </p>
 
 # EventFlow
