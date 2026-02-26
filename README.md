@@ -20,6 +20,20 @@ EventFlow is a full-stack web application for creating, browsing, and managing c
 
 ---
 
+## Live Demo
+
+A static preview of the interface is available on GitHub Pages.
+
+[https://madjeek-web.github.io](https://madjeek-web.github.io/eventflow-demo-standalone.html)
+
+> The demo runs with seed data and resets on each deployment. It illustrates the UI and navigation flow, not live data persistence.
+
+Buy EventFlow: Info / Prices
+Contact us directly by email :
+encrypt-free.74.mq2fl@aleeeas.com
+
+---
+
 ## Table of Contents
 
 - [Why EventFlow ?](#why-eventflow-)
@@ -45,16 +59,6 @@ EventFlow is a full-stack web application for creating, browsing, and managing c
 Most event platforms are either too heavy (full SaaS, database required, complex deployment) or too bare-bones (no auth, no validation, no error handling). EventFlow sits in the middle : it is a real, working platform with proper security practices, yet it remains lightweight enough to run with a single `npm install` and zero external services.
 
 It is a genuine reference for anyone who wants to understand how a modern Next.js application is architected from routing to authentication to state management, reading code that is explicit, commented, and consistent.
-
----
-
-## Live Demo
-
-A static preview of the interface is available on GitHub Pages.
-
-[https://madjeek-web.github.io](https://madjeek-web.github.io)
-
-> The demo runs with seed data and resets on each deployment. It illustrates the UI and navigation flow, not live data persistence.
 
 ---
 
