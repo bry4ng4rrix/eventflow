@@ -58,8 +58,6 @@ It is a genuine reference for anyone who wants to understand how a modern Next.j
 
 ---
 
----
-
 ## Live Demo
 
 A static preview of the interface is available on GitHub Pages.
