@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useEffect, useState } from 'react';
+import { useLogin } from '@/hooks/useLogin';
 
 /**
  * Context pour la gestion des utilisateurs
@@ -16,10 +17,12 @@ export const UsersContext = createContext();
  * @returns {JSX.Element} Provider avec les utilisateurs
  */
 export const UsersProvider = ({ children }) => {
+    const { user, isLoading: authLoading } = useLogin();
+    
     // Liste des utilisateurs
     const [users, setUsers] = useState([]);
     // État de chargement
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     // Erreur éventuelle
     const [error, setError] = useState(null);
 
@@ -35,15 +38,31 @@ export const UsersProvider = ({ children }) => {
         setUsersIndex(index);
     }, [users]);
 
-    // Chargement initial des utilisateurs
+    // Chargement des utilisateurs seulement si l'utilisateur est authentifié
     useEffect(() => {
+        if (!user || authLoading) {
+            // Ne pas charger les utilisateurs si non authentifié ou en cours d'auth
+            setUsers([]);
+            setError(null);
+            setIsLoading(false);
+            return;
+        }
+
         (async () => {
             try {
                 setIsLoading(true);
                 setError(null);
-                const response = await fetch('/api/users');
+                const response = await fetch('/api/users', {
+                    credentials: 'same-origin',
+                });
 
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        // Non autorisé - probablement déconnecté entre temps
+                        setUsers([]);
+                        setError(null);
+                        return;
+                    }
                     throw new Error('Erreur lors du chargement des utilisateurs');
                 }
 
@@ -56,7 +75,7 @@ export const UsersProvider = ({ children }) => {
                 setIsLoading(false);
             }
         })();
-    }, []);
+    }, [user, authLoading]);
 
     /**
      * Récupère un utilisateur par son ID (O(1) avec index)
