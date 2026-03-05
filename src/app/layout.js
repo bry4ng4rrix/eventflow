@@ -3,13 +3,11 @@
  * Définit la structure globale : polices, providers, header/footer.
  *
  * @module app/layout
- * @requires next/font/google - Polices Google optimisées
  * @requires contexts/* - Providers de contexte React
  * @requires components/Header - En-tête de navigation
  * @requires components/Footer - Pied de page
  */
 
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { EventsProvider } from "../contexts/EventsContext";
 import { CategoriesProvider } from "@/contexts/CategoriesContext";
@@ -20,26 +18,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
 import Providers from "./providers";
-
-/**
- * Configuration de la police Geist Sans
- * Variable CSS : --font-geist-sans
- * @constant {Object}
- */
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-/**
- * Configuration de la police Geist Mono (monospace)
- * Variable CSS : --font-geist-mono
- * @constant {Object}
- */
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 /**
  * Métadonnées SEO de l'application
@@ -69,8 +47,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      {/* Application des variables de polices + antialiasing */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      {/* Utilisation des polices système avec antialiasing */}
+      <body className="antialiased">
         {/* Toaster global pour les notifications */}
         <Toaster position="top-right" richColors closeButton />
         {/*

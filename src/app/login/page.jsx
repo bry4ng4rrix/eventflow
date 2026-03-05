@@ -15,13 +15,29 @@
  */
 
 import { useLogin } from "@/hooks/useLogin";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+
+/**
+ * Component that handles the search params logic
+ */
+function SearchParamsHandler({ setSuccessMessage }) {
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const message = searchParams.get('message');
+        if (message === 'inscription_reussie') {
+            setSuccessMessage('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        }
+    }, [searchParams]);
+
+    return null;
+}
 
 /**
  * Page de connexion - Formulaire d'authentification
@@ -48,7 +64,6 @@ export default function LoginPage() {
 
     // Router Next.js pour la redirection post-login
     const router = useRouter();
-    const searchParams = useSearchParams();
 
     // ==================== STATE LOCAL ====================
     // Email saisi par l'utilisateur
@@ -62,14 +77,6 @@ export default function LoginPage() {
 
     // Message de succès (inscription réussie)
     const [successMessage, setSuccessMessage] = useState('');
-
-    // Vérifier si l'utilisateur vient de s'inscrire
-    useEffect(() => {
-        const message = searchParams.get('message');
-        if (message === 'inscription_reussie') {
-            setSuccessMessage('Inscription réussie ! Vous pouvez maintenant vous connecter.');
-        }
-    }, [searchParams]);
 
     /**
      * Gestionnaire de soumission du formulaire
@@ -97,6 +104,9 @@ export default function LoginPage() {
 
     return (
         <div className="max-w-md mx-auto p-6">
+            <Suspense fallback={<div>Loading...</div>}>
+                <SearchParamsHandler setSuccessMessage={setSuccessMessage} />
+            </Suspense>
             <Card>
                 <CardHeader>
                     <CardTitle className="text-3xl">Login</CardTitle>
