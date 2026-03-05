@@ -15,12 +15,13 @@
  */
 
 import { useLogin } from "@/hooks/useLogin";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 /**
  * Page de connexion - Formulaire d'authentification
@@ -47,6 +48,7 @@ export default function LoginPage() {
 
     // Router Next.js pour la redirection post-login
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     // ==================== STATE LOCAL ====================
     // Email saisi par l'utilisateur
@@ -55,9 +57,19 @@ export default function LoginPage() {
     // Mot de passe saisi
     const [password, setPassword] = useState('');
 
-    // Messages d'erreur (non utilisé actuellement)
-    // eslint-disable-next-line no-unused-vars
+    // Messages d'erreur
     const [errors, setErrors] = useState('');
+
+    // Message de succès (inscription réussie)
+    const [successMessage, setSuccessMessage] = useState('');
+
+    // Vérifier si l'utilisateur vient de s'inscrire
+    useEffect(() => {
+        const message = searchParams.get('message');
+        if (message === 'inscription_reussie') {
+            setSuccessMessage('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        }
+    }, [searchParams]);
 
     /**
      * Gestionnaire de soumission du formulaire
@@ -71,13 +83,16 @@ export default function LoginPage() {
         // Empêche le rechargement de la page
         event.preventDefault();
 
+        try {
+            // Appel API de connexion via le context
+            await login(email, password);
 
-        // TODO: verifier si le login a fonctionner et afficher les erreurs eventuelles
-        // Appel API de connexion via le context
-        await login(email, password);
-
-        // Redirection vers la page d'accueil
-        router.push('/');
+            // Redirection vers la page d'accueil seulement si login réussi
+            router.push('/');
+        } catch (error) {
+            // Afficher l'erreur de connexion
+            setErrors(error.message);
+        }
     };
 
     return (
@@ -89,6 +104,19 @@ export default function LoginPage() {
                 <CardContent>
                     {/* Formulaire de connexion */}
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* ==================== MESSAGE DE SUCCÈS ==================== */}
+                        {successMessage && (
+                            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+                                {successMessage}
+                            </div>
+                        )}
+
+                        {/* ==================== MESSAGE D'ERREUR ==================== */}
+                        {errors && (
+                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                                {errors}
+                            </div>
+                        )}
                         {/* ==================== CHAMP EMAIL ==================== */}
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -117,6 +145,14 @@ export default function LoginPage() {
                         <Button type="submit" className="w-full">
                             Login
                         </Button>
+
+                        {/* ==================== LIEN VERS INSCRIPTION ==================== */}
+                        <div className="text-center text-sm text-gray-600">
+                            Pas encore de compte ?{' '}
+                            <Link href="/register" className="text-blue-600 hover:underline">
+                                Créer un compte
+                            </Link>
+                        </div>
                     </form>
                 </CardContent>
             </Card>

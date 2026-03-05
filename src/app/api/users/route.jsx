@@ -51,13 +51,13 @@ const BCRYPT_COST = 12;
 const createUserSchema = z.object({
     firstname: z
         .string({ required_error: 'First name is required' })
-        .min(2, 'First name must be at least 2 characters')
+        .min(1, 'First name is required')
         .max(50, 'First name must not exceed 50 characters')
         .trim(),
 
     lastname: z
         .string({ required_error: 'Last name is required' })
-        .min(2, 'Last name must be at least 2 characters')
+        .min(1, 'Last name is required')
         .max(50, 'Last name must not exceed 50 characters')
         .trim(),
 
@@ -69,7 +69,7 @@ const createUserSchema = z.object({
 
     password: z
         .string({ required_error: 'Password is required' })
-        .min(8, 'Password must be at least 8 characters')
+        .min(6, 'Password must be at least 6 characters')
         .max(128, 'Password is too long'),
 });
 
